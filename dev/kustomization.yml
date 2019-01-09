@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Kustomization
+nameSuffix: -v1
+
+crds:
+- ../base/crds/openshift-deploymentconfig.json
+
+bases:
+- ../base
+
+resources:
+- env.yml
+
+configMapGenerator:
+- name: gzd-batchkette-datasources
+  files:
+  - datasource.properties

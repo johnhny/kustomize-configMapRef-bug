@@ -1,0 +1,51 @@
+apiVersion: v1
+data:
+  datasource.properties: |
+    dsname=ora_dokumentenmgmt_gzd_batchkette_ds
+    dsusername=dbuser
+    dspassword=thisisthepassword
+kind: ConfigMap
+metadata:
+  name: gzd-batchkette-datasources-v1-tmgt5dm5b7
+---
+apiVersion: v1
+data:
+  SOME_KEY_1: Have a pineapple!
+  SOME_KEY_2: Have a beer!
+kind: ConfigMap
+metadata:
+  name: gzd-batchkette-env-v1
+---
+apiVersion: v1
+kind: DeploymentConfig
+metadata:
+  name: gzd-batchkette-v1
+spec:
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    deployment-config.name: gzd-batchkette
+  strategy:
+    type: Rolling
+  template:
+    metadata:
+      labels:
+        deployment-config.name: gzd-batchkette
+    spec:
+      containers:
+        envFrom:
+        - configMapRef:
+            name: gzd-batchkette-env
+        image: registry.org/repository/some-image:0.1.22
+        imagePullPolicy: Always
+        name: default-container
+        volumeMounts:
+        - mountPath: /u01/oracle/datasources
+          name: volume-gzd-batchkette-datasources
+      volumes:
+      - configMap:
+          defaultMode: 420
+          name: gzd-batchkette-datasources
+        name: volume-gzd-batchkette-datasources
+  triggers:
+  - type: ConfigChange
