@@ -27,7 +27,7 @@
 				},
 				"template/spec/containers/envFrom/configMapRef": {
 					"x-kubernetes-object-ref-api-version": "v1",
-					"x-kubernetes-object-ref-kind": "ConfigMapRef"
+					"x-kubernetes-object-ref-kind": "ConfigMap"
 				}
 			}
 		}
